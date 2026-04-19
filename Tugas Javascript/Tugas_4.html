@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Tugas Pertemuan 4</title>
+
+<style>
+body{
+font-family:Arial;
+padding:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+th,td{
+border:1px solid black;
+padding:10px;
+text-align:center;
+}
+
+th{
+background:#ddd;
+}
+</style>
+
+</head>
+<body>
+
+<h2>Sistem Manajemen Transportasi</h2>
+
+<div id="hasil"></div>
+
+<script>
+
+//=====================================
+// Class Pelanggan
+//=====================================
+
+class Pelanggan{
+
+constructor(nama,nomorTelepon,kendaraanDisewa){
+
+this.nama = nama;
+this.nomorTelepon = nomorTelepon;
+this.kendaraanDisewa = kendaraanDisewa;
+
+}
+
+
+//=====================================
+// Method mencatat transaksi penyewaan
+//=====================================
+
+catatTransaksi(){
+
+return {
+nama:this.nama,
+nomorTelepon:this.nomorTelepon,
+kendaraanDisewa:this.kendaraanDisewa
+};
+
+}
+
+}
+
+
+
+//=====================================
+// Array daftar pelanggan
+//=====================================
+
+let daftarPelanggan=[];
+
+
+//=====================================
+// Menambah data pelanggan
+//=====================================
+
+let p1 = new Pelanggan(
+"Dodi Prayodi",
+"081234567890",
+"Toyota Avanza"
+);
+
+let p2 = new Pelanggan(
+"Rina Putri",
+"082233445566",
+"Honda Brio"
+);
+
+let p3 = new Pelanggan(
+"Fajar Ahmad",
+"083344556677",
+"Yamaha NMAX"
+);
+
+
+// simpan transaksi ke array
+
+daftarPelanggan.push(p1.catatTransaksi());
+daftarPelanggan.push(p2.catatTransaksi());
+daftarPelanggan.push(p3.catatTransaksi());
+
+
+
+//=====================================
+// Menampilkan daftar pelanggan
+//=====================================
+
+function tampilkanPelanggan(){
+
+let data=`
+
+<table>
+
+<tr>
+<th>Nama</th>
+<th>Nomor Telepon</th>
+<th>Kendaraan Disewa</th>
+</tr>
+
+`;
+
+for(let i=0;i<daftarPelanggan.length;i++){
+
+data += `
+
+<tr>
+<td>${daftarPelanggan[i].nama}</td>
+<td>${daftarPelanggan[i].nomorTelepon}</td>
+<td>${daftarPelanggan[i].kendaraanDisewa}</td>
+</tr>
+
+`;
+
+}
+
+data += "</table>";
+
+document.getElementById("hasil").innerHTML=data;
+
+}
+
+
+// jalankan
+tampilkanPelanggan();
+
+</script>
+
+</body>
+</html>
