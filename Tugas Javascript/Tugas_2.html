@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Tugas 2 Javascript</title>
+
+<style>
+table{
+border-collapse: collapse;
+width: 100%;
+margin-top:20px;
+}
+
+th,td{
+border:1px solid black;
+padding:10px;
+text-align:center;
+}
+
+thead{
+background:#ddd;
+}
+
+tfoot{
+background:#eee;
+font-weight:bold;
+}
+</style>
+
+</head>
+<body>
+
+<h2>Data Pegawai</h2>
+
+<div id="hasil"></div>
+
+<script>
+
+// =======================
+// Data Pegawai
+// =======================
+
+let nama = "Dodi Prayodi";
+let umur = 25;
+let jabatan = "Manajer";
+let status = "Menikah";
+
+
+// =======================
+// Menentukan Gaji Pokok dengan IF
+// =======================
+
+let gapok;
+
+if(jabatan == "Manajer"){
+gapok = 15000000;
+}
+else if(jabatan == "Asisten Manajer"){
+gapok = 10000000;
+}
+else{
+gapok = 5000000;
+}
+
+
+// =======================
+// Hitung Tunjangan Jabatan
+// 15% dari gapok
+// =======================
+
+let tunjanganJabatan = 0.15 * gapok;
+
+
+// =======================
+// Hitung BPJS
+// 10% dari gapok
+// =======================
+
+let bpjs = 0.10 * gapok;
+
+
+// =======================
+// Tunjangan Keluarga (Ternary)
+// Jika menikah = 20% gapok
+// =======================
+
+let tunjanganKeluarga = (status == "Menikah") 
+? 0.20 * gapok 
+: 0;
+
+
+// =======================
+// Total Gaji
+// =======================
+
+let totalGaji = gapok + tunjanganJabatan + bpjs + tunjanganKeluarga;
+
+
+// =======================
+// Cetak tabel
+// =======================
+
+document.getElementById("hasil").innerHTML=`
+
+<table>
+
+<thead>
+<tr>
+<th>Nama Pegawai</th>
+<th>Umur</th>
+<th>Jabatan</th>
+<th>Status</th>
+<th>Gaji Pokok</th>
+<th>Tunjangan Jabatan</th>
+<th>BPJS</th>
+<th>Tunjangan Keluarga</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>${nama}</td>
+<td>${umur}</td>
+<td>${jabatan}</td>
+<td>${status}</td>
+<td>Rp ${gapok.toLocaleString()}</td>
+<td>Rp ${tunjanganJabatan.toLocaleString()}</td>
+<td>Rp ${bpjs.toLocaleString()}</td>
+<td>Rp ${tunjanganKeluarga.toLocaleString()}</td>
+</tr>
+</tbody>
+
+<tfoot>
+<tr>
+<td colspan="7">TOTAL GAJI</td>
+<td>Rp ${totalGaji.toLocaleString()}</td>
+</tr>
+</tfoot>
+
+</table>
+
+`;
+
+</script>
+
+</body>
+</html>
