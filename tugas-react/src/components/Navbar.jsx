@@ -1,22 +1,45 @@
-import { Link, useLocation } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+import './Navbar.css'
+
+const navItems = [
+  { to: '/',        label: 'Home'    },
+  { to: '/team',    label: 'Team'    },
+  { to: '/contact', label: 'Contact' },
+]
 
 export default function Navbar() {
-  const { pathname } = useLocation()
-
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <nav className="navbar navbar-expand-lg sticky-top devstudio-nav">
       <div className="container">
-        <Link className="navbar-brand fw-bold" to="/">⚡ DevStudio</Link>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+        <NavLink className="navbar-brand devstudio-brand" to="/">
+          ⚡ DevStudio
+        </NavLink>
+
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNav"
+          aria-controls="mainNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span className="navbar-toggler-icon" />
         </button>
-        <div className="collapse navbar-collapse" id="nav">
-          <ul className="navbar-nav ms-auto">
-            {[['/', 'Home'], ['/team', 'Team'], ['/contact', 'Contact']].map(([path, label]) => (
-              <li className="nav-item" key={path}>
-                <Link className={`nav-link ${pathname === path ? 'active fw-semibold' : ''}`} to={path}>
+
+        <div className="collapse navbar-collapse" id="mainNav">
+          <ul className="navbar-nav ms-auto gap-1">
+            {navItems.map(({ to, label }) => (
+              <li className="nav-item" key={to}>
+                <NavLink
+                  to={to}
+                  end={to === '/'}
+                  className={({ isActive }) =>
+                    `nav-link devstudio-navlink${isActive ? ' active' : ''}`
+                  }
+                >
                   {label}
-                </Link>
+                </NavLink>
               </li>
             ))}
           </ul>

@@ -51,9 +51,6 @@ export default function Team() {
         </div>
       </section>
 
-      <footer className="py-4 text-center">
-        <p className="mb-0">© 2025 DevStudio. Dibuat dengan ❤️ menggunakan React & Bootstrap.</p>
-      </footer>
     </>
   )
 }

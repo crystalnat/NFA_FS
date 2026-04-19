@@ -53,10 +53,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-4 text-center">
-        <p className="mb-0">© 2025 DevStudio. Dibuat dengan ❤️ menggunakan React & Bootstrap.</p>
-      </footer>
     </>
   )
 }
