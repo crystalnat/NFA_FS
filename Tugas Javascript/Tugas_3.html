@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Tugas Pertemuan 3 JS</title>
+
+<style>
+body{
+font-family:Arial;
+padding:20px;
+}
+
+table{
+border-collapse:collapse;
+width:100%;
+margin-top:20px;
+}
+
+th,td{
+border:1px solid black;
+padding:10px;
+text-align:center;
+}
+
+th{
+background:#ddd;
+}
+</style>
+
+</head>
+<body>
+
+<h2>Manajemen Produk Toko Online</h2>
+
+<div id="hasil"></div>
+
+<script>
+
+//=================================
+// Array daftar produk toko
+//=================================
+
+let produkToko = [
+
+{id:1, nama:"Laptop", harga:7000000, stok:5},
+
+{id:2, nama:"Mouse", harga:200000, stok:10},
+
+{id:3, nama:"Keyboard", harga:350000, stok:7}
+
+];
+
+
+//=================================
+// Fungsi tambah produk
+//=================================
+
+function tambahProduk(nama,harga,stok){
+
+let idBaru = produkToko.length + 1;
+
+produkToko.push({
+id:idBaru,
+nama:nama,
+harga:harga,
+stok:stok
+});
+
+}
+
+
+//=================================
+// Fungsi hapus produk berdasarkan id
+//=================================
+
+function hapusProduk(id){
+
+produkToko = produkToko.filter(function(produk){
+return produk.id !== id;
+});
+
+}
+
+
+//=================================
+// Fungsi tampilkan produk
+//=================================
+
+function tampilkanProduk(){
+
+let data = `
+<table>
+
+<tr>
+<th>ID</th>
+<th>Nama Produk</th>
+<th>Harga</th>
+<th>Stok</th>
+</tr>
+`;
+
+for(let i=0; i<produkToko.length; i++){
+
+data += `
+
+<tr>
+<td>${produkToko[i].id}</td>
+<td>${produkToko[i].nama}</td>
+<td>Rp ${produkToko[i].harga.toLocaleString()}</td>
+<td>${produkToko[i].stok}</td>
+</tr>
+
+`;
+
+}
+
+data += "</table>";
+
+document.getElementById("hasil").innerHTML=data;
+
+}
+
+
+
+//=================================
+// Simulasi program
+//=================================
+
+//Tambah produk baru
+tambahProduk("Monitor",1500000,4);
+
+//Hapus produk id 2 (Mouse)
+hapusProduk(2);
+
+//Tampilkan hasil akhir
+tampilkanProduk();
+
+</script>
+
+</body>
+</html>
