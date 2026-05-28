@@ -9,17 +9,34 @@ export function AdminProvider({ children }) {
   const [authors, setAuthors] = useState(initialAuthors)
 
   function addGenre(genre) {
-    const newGenre = { ...genre, id: Date.now() }
-    setGenres(prev => [...prev, newGenre])
+    setGenres(prev => [...prev, { ...genre, id: Date.now() }])
+  }
+
+  function updateGenre(id, updated) {
+    setGenres(prev => prev.map(g => g.id === id ? { ...g, ...updated } : g))
+  }
+
+  function deleteGenre(id) {
+    setGenres(prev => prev.filter(g => g.id !== id))
   }
 
   function addAuthor(author) {
-    const newAuthor = { ...author, id: Date.now() }
-    setAuthors(prev => [...prev, newAuthor])
+    setAuthors(prev => [...prev, { ...author, id: Date.now() }])
+  }
+
+  function updateAuthor(id, updated) {
+    setAuthors(prev => prev.map(a => a.id === id ? { ...a, ...updated } : a))
+  }
+
+  function deleteAuthor(id) {
+    setAuthors(prev => prev.filter(a => a.id !== id))
   }
 
   return (
-    <AdminContext.Provider value={{ genres, authors, addGenre, addAuthor }}>
+    <AdminContext.Provider value={{
+      genres, addGenre, updateGenre, deleteGenre,
+      authors, addAuthor, updateAuthor, deleteAuthor,
+    }}>
       {children}
     </AdminContext.Provider>
   )
