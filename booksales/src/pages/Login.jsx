@@ -104,6 +104,11 @@ export default function Login() {
                 </span>
               </div>
             </div>
+
+            <div className="mt-3 text-center">
+              <span className="text-muted small">Belum punya akun? </span>
+              <Link to="/register" className="small fw-semibold text-primary">Daftar sekarang</Link>
+            </div>
           </div>
         </div>
 

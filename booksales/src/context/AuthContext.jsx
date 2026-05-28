@@ -13,6 +13,9 @@ const ACCOUNTS = [
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
+  // Akun yang bisa bertambah saat runtime (registrasi baru)
+  const [accounts, setAccounts] = useState(ACCOUNTS)
+
   // Cek sessionStorage agar login tetap aktif selama tab terbuka
   const [currentUser, setCurrentUser] = useState(() => {
     try {
@@ -23,13 +26,33 @@ export function AuthProvider({ children }) {
     }
   })
 
+  function register({ name, email, username, password }) {
+    if (accounts.find(a => a.username === username)) {
+      return { ok: false, message: 'Username sudah digunakan.' }
+    }
+    if (accounts.find(a => a.email === email)) {
+      return { ok: false, message: 'Email sudah terdaftar.' }
+    }
+
+    const newAccount = {
+      id: Date.now(),
+      name,
+      email,
+      username,
+      password,
+      role: 'user',
+    }
+    setAccounts(prev => [...prev, newAccount])
+    return { ok: true }
+  }
+
   function login(username, password) {
-    const account = ACCOUNTS.find(
+    const account = accounts.find(
       a => a.username === username && a.password === password
     )
     if (!account) return { ok: false, message: 'Username atau password salah.' }
 
-    const user = { id: account.id, name: account.name, username: account.username, role: account.role }
+    const user = { id: account.id, name: account.name, email: account.email, username: account.username, role: account.role }
     sessionStorage.setItem('booksales_user', JSON.stringify(user))
     setCurrentUser(user)
     return { ok: true, user }
@@ -44,7 +67,7 @@ export function AuthProvider({ children }) {
   const isUser  = currentUser?.role === 'user'
 
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout, isAdmin, isUser }}>
+    <AuthContext.Provider value={{ currentUser, register, login, logout, isAdmin, isUser }}>
       {children}
     </AuthContext.Provider>
   )

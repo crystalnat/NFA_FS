@@ -10,6 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Home           from './pages/Home'
 import Books          from './pages/Books'
 import Login          from './pages/Login'
+import Register       from './pages/Register'
 import UserDashboard  from './pages/UserDashboard'
 import Unauthorized   from './pages/Unauthorized'
 
@@ -54,8 +55,9 @@ const router = createBrowserRouter([
     ],
   },
 
-  /* ── Login (tidak pakai layout navbar) ── */
-  { path: '/login', element: <Login /> },
+  /* ── Login & Register (tidak pakai layout navbar) ── */
+  { path: '/login',    element: <Login />    },
+  { path: '/register', element: <Register /> },
 
   /* ── Halaman khusus USER yang sudah login ── */
   {
