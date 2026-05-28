@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Models;
+
+class Author
+{
+    /**
+     * Mengembalikan seluruh data author (simulasi database).
+     */
+    public static function all(): array
+    {
+        return [
+            [
+                'id'    => 1,
+                'name'  => 'Andi Prasetyo',
+                'email' => 'andi@booksales.id',
+                'bio'   => 'Pengembang web senior dengan 10 tahun pengalaman di bidang JavaScript dan Vue.js.',
+            ],
+            [
+                'id'    => 2,
+                'name'  => 'Dina Sari',
+                'email' => 'dina@booksales.id',
+                'bio'   => 'Frontend engineer spesialis React dan desain antarmuka pengguna modern.',
+            ],
+            [
+                'id'    => 3,
+                'name'  => 'Budi Santoso',
+                'email' => 'budi@booksales.id',
+                'bio'   => 'Backend developer berpengalaman di Node.js, Python, dan arsitektur microservices.',
+            ],
+            [
+                'id'    => 4,
+                'name'  => 'Rina Marlina',
+                'email' => 'rina@booksales.id',
+                'bio'   => 'UI/UX designer dan CSS specialist, kontributor aktif open source.',
+            ],
+            [
+                'id'    => 5,
+                'name'  => 'Maya Putri',
+                'email' => 'maya@booksales.id',
+                'bio'   => 'Full-stack developer dengan fokus pada TypeScript dan sistem bertipe kuat.',
+            ],
+        ];
+    }
+
+    /**
+     * Mencari author berdasarkan ID.
+     */
+    public static function find(int $id): ?array
+    {
+        $all = self::all();
+        foreach ($all as $author) {
+            if ($author['id'] === $id) {
+                return $author;
+            }
+        }
+        return null;
+    }
+}

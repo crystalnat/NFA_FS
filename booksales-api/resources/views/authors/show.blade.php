@@ -1,0 +1,43 @@
+@extends('layouts.app')
+
+@section('title', $author['name'])
+
+@section('content')
+
+<a href="/authors" class="text-muted small d-inline-block mb-3">← Kembali ke Daftar Author</a>
+
+<div class="card p-4">
+  <div class="d-flex align-items-center gap-3 mb-4">
+    <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold"
+      style="width:56px;height:56px;background:#198754;font-size:1.4rem;">
+      {{ strtoupper(substr($author['name'], 0, 1)) }}
+    </div>
+    <div>
+      <h4 class="fw-bold mb-0">{{ $author['name'] }}</h4>
+      <small class="text-muted">ID: {{ $author['id'] }}</small>
+    </div>
+  </div>
+
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <th style="width:140px" class="bg-light">ID</th>
+        <td>{{ $author['id'] }}</td>
+      </tr>
+      <tr>
+        <th class="bg-light">Nama Lengkap</th>
+        <td>{{ $author['name'] }}</td>
+      </tr>
+      <tr>
+        <th class="bg-light">Email</th>
+        <td>{{ $author['email'] }}</td>
+      </tr>
+      <tr>
+        <th class="bg-light">Bio</th>
+        <td>{{ $author['bio'] }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+@endsection
