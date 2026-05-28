@@ -3,20 +3,45 @@
 namespace App\Http\Controllers;
 
 use App\Models\Author;
+use Illuminate\Http\JsonResponse;
 
 class AuthorController extends Controller
 {
-    public function index()
+    /**
+     * GET /api/authors
+     * Mengembalikan semua data author beserta jumlah bukunya.
+     */
+    public function index(): JsonResponse
     {
         $authors = Author::withCount('books')->get();
 
-        return view('authors.index', compact('authors'));
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Data author berhasil diambil.',
+            'total'   => $authors->count(),
+            'data'    => $authors,
+        ]);
     }
 
-    public function show(int $id)
+    /**
+     * GET /api/authors/{id}
+     * Mengembalikan detail satu author beserta daftar bukunya.
+     */
+    public function show(int $id): JsonResponse
     {
-        $author = Author::with('books')->findOrFail($id);
+        $author = Author::with('books')->find($id);
 
-        return view('authors.show', compact('author'));
+        if (!$author) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => "Author dengan ID {$id} tidak ditemukan.",
+            ], 404);
+        }
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Detail author berhasil diambil.',
+            'data'    => $author,
+        ]);
     }
 }

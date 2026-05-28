@@ -3,30 +3,45 @@
 namespace App\Http\Controllers;
 
 use App\Models\Genre;
+use Illuminate\Http\JsonResponse;
 
 class GenreController extends Controller
 {
     /**
-     * Menampilkan daftar semua genre.
+     * GET /api/genres
+     * Mengembalikan semua data genre.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $genres = Genre::all();
 
-        return view('genres.index', compact('genres'));
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Data genre berhasil diambil.',
+            'total'   => count($genres),
+            'data'    => $genres,
+        ]);
     }
 
     /**
-     * Menampilkan detail satu genre berdasarkan ID.
+     * GET /api/genres/{id}
+     * Mengembalikan detail satu genre berdasarkan ID.
      */
-    public function show(int $id)
+    public function show(int $id): JsonResponse
     {
         $genre = Genre::find($id);
 
         if (!$genre) {
-            abort(404, 'Genre tidak ditemukan.');
+            return response()->json([
+                'status'  => 'error',
+                'message' => "Genre dengan ID {$id} tidak ditemukan.",
+            ], 404);
         }
 
-        return view('genres.show', compact('genre'));
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Detail genre berhasil diambil.',
+            'data'    => $genre,
+        ]);
     }
 }
