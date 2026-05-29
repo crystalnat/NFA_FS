@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Author;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AuthorController extends Controller
 {
@@ -43,5 +44,29 @@ class AuthorController extends Controller
             'message' => 'Detail author berhasil diambil.',
             'data'    => $author,
         ]);
+    }
+
+    /**
+     * POST /api/authors
+     * Menambahkan author baru.
+     *
+     * Body (JSON):
+     *   { "name": "...", "email": "...", "bio": "..." }
+     */
+    public function store(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'name'  => 'required|string|max:150',
+            'email' => 'required|email|unique:authors,email',
+            'bio'   => 'nullable|string|max:1000',
+        ]);
+
+        $author = Author::create($validated);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Author berhasil ditambahkan.',
+            'data'    => $author,
+        ], 201);
     }
 }

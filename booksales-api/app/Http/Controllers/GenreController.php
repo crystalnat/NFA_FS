@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Genre;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {
@@ -18,7 +19,7 @@ class GenreController extends Controller
         return response()->json([
             'status'  => 'success',
             'message' => 'Data genre berhasil diambil.',
-            'total'   => count($genres),
+            'total'   => $genres->count(),
             'data'    => $genres,
         ]);
     }
@@ -43,5 +44,28 @@ class GenreController extends Controller
             'message' => 'Detail genre berhasil diambil.',
             'data'    => $genre,
         ]);
+    }
+
+    /**
+     * POST /api/genres
+     * Menambahkan genre baru.
+     *
+     * Body (JSON):
+     *   { "name": "Kotlin", "description": "..." }
+     */
+    public function store(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'name'        => 'required|string|max:100|unique:genres,name',
+            'description' => 'nullable|string|max:500',
+        ]);
+
+        $genre = Genre::create($validated);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Genre berhasil ditambahkan.',
+            'data'    => $genre,
+        ], 201);
     }
 }

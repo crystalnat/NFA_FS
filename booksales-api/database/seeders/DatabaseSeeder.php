@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
     {
         // Author harus di-seed lebih dulu karena books butuh author_id
         $this->call([
+            GenreSeeder::class,
             AuthorSeeder::class,
             BookSeeder::class,
         ]);
