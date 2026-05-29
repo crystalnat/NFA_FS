@@ -10,7 +10,6 @@ class GenreController extends Controller
 {
     /**
      * GET /api/genres
-     * Mengembalikan semua data genre.
      */
     public function index(): JsonResponse
     {
@@ -25,33 +24,7 @@ class GenreController extends Controller
     }
 
     /**
-     * GET /api/genres/{id}
-     * Mengembalikan detail satu genre berdasarkan ID.
-     */
-    public function show(int $id): JsonResponse
-    {
-        $genre = Genre::find($id);
-
-        if (!$genre) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => "Genre dengan ID {$id} tidak ditemukan.",
-            ], 404);
-        }
-
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Detail genre berhasil diambil.',
-            'data'    => $genre,
-        ]);
-    }
-
-    /**
      * POST /api/genres
-     * Menambahkan genre baru.
-     *
-     * Body (JSON):
-     *   { "name": "Kotlin", "description": "..." }
      */
     public function store(Request $request): JsonResponse
     {
@@ -67,5 +40,50 @@ class GenreController extends Controller
             'message' => 'Genre berhasil ditambahkan.',
             'data'    => $genre,
         ], 201);
+    }
+
+    /**
+     * GET /api/genres/{genre}
+     */
+    public function show(Genre $genre): JsonResponse
+    {
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Detail genre berhasil diambil.',
+            'data'    => $genre,
+        ]);
+    }
+
+    /**
+     * PUT/PATCH /api/genres/{genre}
+     */
+    public function update(Request $request, Genre $genre): JsonResponse
+    {
+        $validated = $request->validate([
+            'name'        => 'sometimes|required|string|max:100|unique:genres,name,' . $genre->id,
+            'description' => 'nullable|string|max:500',
+        ]);
+
+        $genre->update($validated);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Genre berhasil diperbarui.',
+            'data'    => $genre,
+        ]);
+    }
+
+    /**
+     * DELETE /api/genres/{genre}
+     */
+    public function destroy(Genre $genre): JsonResponse
+    {
+        $name = $genre->name;
+        $genre->delete();
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => "Genre \"{$name}\" berhasil dihapus.",
+        ]);
     }
 }

@@ -10,7 +10,6 @@ class AuthorController extends Controller
 {
     /**
      * GET /api/authors
-     * Mengembalikan semua data author beserta jumlah bukunya.
      */
     public function index(): JsonResponse
     {
@@ -25,33 +24,7 @@ class AuthorController extends Controller
     }
 
     /**
-     * GET /api/authors/{id}
-     * Mengembalikan detail satu author beserta daftar bukunya.
-     */
-    public function show(int $id): JsonResponse
-    {
-        $author = Author::with('books')->find($id);
-
-        if (!$author) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => "Author dengan ID {$id} tidak ditemukan.",
-            ], 404);
-        }
-
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Detail author berhasil diambil.',
-            'data'    => $author,
-        ]);
-    }
-
-    /**
      * POST /api/authors
-     * Menambahkan author baru.
-     *
-     * Body (JSON):
-     *   { "name": "...", "email": "...", "bio": "..." }
      */
     public function store(Request $request): JsonResponse
     {
@@ -68,5 +41,53 @@ class AuthorController extends Controller
             'message' => 'Author berhasil ditambahkan.',
             'data'    => $author,
         ], 201);
+    }
+
+    /**
+     * GET /api/authors/{author}
+     */
+    public function show(Author $author): JsonResponse
+    {
+        $author->loadCount('books')->load('books');
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Detail author berhasil diambil.',
+            'data'    => $author,
+        ]);
+    }
+
+    /**
+     * PUT/PATCH /api/authors/{author}
+     */
+    public function update(Request $request, Author $author): JsonResponse
+    {
+        $validated = $request->validate([
+            'name'  => 'sometimes|required|string|max:150',
+            'email' => 'sometimes|required|email|unique:authors,email,' . $author->id,
+            'bio'   => 'nullable|string|max:1000',
+        ]);
+
+        $author->update($validated);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Author berhasil diperbarui.',
+            'data'    => $author,
+        ]);
+    }
+
+    /**
+     * DELETE /api/authors/{author}
+     */
+    public function destroy(Author $author): JsonResponse
+    {
+        $name = $author->name;
+        $author->delete();
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => "Author \"{$name}\" berhasil dihapus.",
+        ]);
     }
 }
