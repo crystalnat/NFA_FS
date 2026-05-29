@@ -9,14 +9,19 @@ use App\Http\Controllers\GenreController;
 |--------------------------------------------------------------------------
 | API Routes — BookSales
 |--------------------------------------------------------------------------
-| apiResource menghasilkan 5 route standar REST:
-|   GET    /resource          → index()
-|   POST   /resource          → store()
-|   GET    /resource/{id}     → show()
-|   PUT    /resource/{id}     → update()
-|   DELETE /resource/{id}     → destroy()
+|
+| PUBLIK  (tanpa autentikasi) : index, show
+| ADMIN   (header X-Admin-Token: booksales-admin-2025) : store, update, destroy
+|
 */
 
-Route::apiResource('genres',  GenreController::class);
-Route::apiResource('authors', AuthorController::class);
+// ── PUBLIK — dapat diakses siapa saja ──────────────────────────────────
+Route::apiResource('genres',  GenreController::class)->only(['index', 'show']);
+Route::apiResource('authors', AuthorController::class)->only(['index', 'show']);
 Route::apiResource('books',   BookController::class)->only(['index', 'show']);
+
+// ── ADMIN — hanya admin dengan X-Admin-Token yang valid ────────────────
+Route::middleware('admin')->group(function () {
+    Route::apiResource('genres',  GenreController::class)->only(['store', 'update', 'destroy']);
+    Route::apiResource('authors', AuthorController::class)->only(['store', 'update', 'destroy']);
+});
